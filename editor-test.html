@@ -1,20 +1,45 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 	</head>
 	<body>
 		<div id="container" style="width:800px;height:600px;border:1px solid grey"></div>
 
-		<script src="monaco/min/vs/loader.js"></script>
+		<script src="./node_modules/monaco-editor/min/vs/loader.js"></script>
 		<script>
-			require.config({ paths: { vs: 'monaco-editor/min/vs' } });
+
+			function loadScript(url, callback) {
+			  const xhr = new XMLHttpRequest();
+			  xhr.open('GET', url);
+			  xhr.onload = () => {
+				if (xhr.status === 200) {
+				  if (callback) callback(xhr.responseText);
+				}
+			  };
+			  xhr.send();
+			}
+
+			require.config({ paths: { vs: './node_modules/monaco-editor/min/vs' } });
 			require(['vs/editor/editor.main'], function () {
-				var editor = monaco.editor.create(document.getElementById('container'), {
+				window.editor = monaco.editor.create(document.getElementById('container'), {
 					value: ['function x() {', '\tconsole.log("Hello world!");', '}'].join('\n'),
 					language: 'javascript'
-				});
+				})
+
+				loadScript("./mcts-viz/lib/mcts-template.js", (text)=>{
+					window.editor.setValue(text)
+				})
 			});
+
+
+
+			window.play = () =>{
+				eval(editor.getValue())
+			}
 		</script>
+
+	<button onclick="play()"> Play </button>
+
 	</body>
 </html>
