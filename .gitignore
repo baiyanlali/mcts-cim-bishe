@@ -1,2 +1,35 @@
 
 .idea/
+
+
+node_modules/
+jspm_packages/
+bower_components/
+
+npm-debug.log
+yarn-error.log
+yarn-debug.log
+lerna-debug.log
+.serverless
+
+.env
+.env.test
+.custom-env
+
+# cache files
+.yarn/cache
+.yarn/unplugged
+.yarn/install-state.gz
+.eslintcache
+.cache
+.parcel-cache
+.npm
+
+# vs editor related files
+.vscode-test
+.vscode
+
+作者：迪鲁宾
+链接：https://juejin.cn/post/7129278168392794119
+来源：稀土掘金
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
