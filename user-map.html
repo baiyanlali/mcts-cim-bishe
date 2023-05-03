@@ -76,17 +76,40 @@
                     <script type="module" src="./sokoban/tree_viz_sokoban.js"></script>
                     <script src="./sokoban/sokoban_interactive.js"></script>
                     <script src="./sokoban/sokoban_mcts.js"></script>
-                    <script src="./sokoban/SokobanGameMapEditor.js"></script>
+                    <script type="module" src="./sokoban/SokobanGameMapEditor.js"></script>
                     <script type="module">
                         import {vis_sokoban} from "./sokoban/tree_viz_sokoban.js";
                         import SokobanGame from "./sokoban/SokobanGame.js";
-
+                        import SokobanMapEditor, {sketch_sokoban_editor} from "./sokoban/SokobanGameMapEditor.js"
+                        window.mcts_sokoban_editor = new p5(sketch_sokoban_editor, "soko_mcts_tree_vis_editor")
                         window.mcts_sokobanGame = new SokobanGame("mcts-")
                         window.soko_mcts_tree_vis_p5 = new p5(vis_sokoban, "soko_mcts_tree_vis");
                         window.soko_mcts_interactive = new SokobanInteractive(soko_mcts_tree_vis_p5, "soko_mcts", mcts_sokobanGame)
                         window.soko_mcts_interactive.setupInteractive()
                         mcts_sokobanGame.init()
+                        window.sokoban_editor_manager = new SokobanMapEditor(mcts_sokobanGame, mcts_sokoban_editor)
+                        document.getElementById("soko_size").addEventListener('input', ()=>{
+                            let size = document.getElementById("soko_size").value
+                            document.getElementById("soko_size_text").innerText = size
+                            mcts_sokoban_editor.changeSize(size, size)
+                        })
+                        // sokoban_editor_manager.synthBoard()
+
+                        const sleep = (delay) => new Promise((resolve)=>setTimeout(resolve, delay));
+
+                        // console.info("lalala2")
+
+
                     </script>
+
+                    <div>
+                        hello
+                        <div id="soko_mcts_tree_vis_editor" class="tree_vis"></div>
+                        <input id="soko_size" type="range" min="5" max="20" value="5" step="1" /> Grid Size:<span id="soko_size_text"><b>1</b></span>
+                        <br>
+
+                        <button onclick="sokoban_editor_manager.synthBoard()">Syn Board</button>
+                    </div>
 
                     <div class="four_procedure">
                         <div id="mcts-sokobangamediv" class="interactive-ttt-left">

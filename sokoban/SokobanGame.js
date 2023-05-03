@@ -135,6 +135,19 @@ export default class SokobanGame {
         this.step = 0
     }
 
+    set_board(board){
+
+        this.sokoban.board = Array.from({length: board.length}, ()=>new Array(board[0].length).fill(SokobanTile.Empty))
+        for (let i = 0; i < board.length; i++) {
+            for (let j = 0; j < board[0].length; j++) {
+                this.sokoban.board[i][j] = board[i][j]
+            }
+        }
+
+        this.sokoban.player_position = this.sokoban.get_player_position()
+        this.sokoban.end_positions = this.sokoban.get_end_positions()
+    }
+
     async init() {
         await sleep(100)
         document.getElementById(this.screen + "_reset").style.display = "none"
