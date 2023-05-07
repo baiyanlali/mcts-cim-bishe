@@ -48,7 +48,7 @@ export const sketch_sokoban_editor = (s) =>{
     }
 
     s.mousePressed = () => {
-        if (!(s.mouseX > 0 && s.mouseY > 0 && s.mouseX < s.width && s.mouseY < s.height)) return
+        if (!(s.mouseX > 0 && s.mouseY > 0 && s.mouseX < s.width && s.mouseY < s.height)) return true
         console.log("pressed!")
         s.tileSize = (s.width - 20)/s.tileNum;
         
@@ -62,7 +62,9 @@ export const sketch_sokoban_editor = (s) =>{
     }
 
     s.changeSize = (row, column)=>{
-
+        row = parseInt(row)
+        column = parseInt(column)
+        // let new_board = Array(row).fill(0).map(() => Array(column).fill(SokobanTile.Empty))
         let new_board = Array.from({length: row}, ()=>new Array(column).fill(SokobanTile.Empty))
         for (let i = 0; i < Math.min(row ,s.board.length); i++) {
             for (let j = 0; j < Math.min(column, s.board[0].length); j++) {
@@ -83,7 +85,7 @@ export const sketch_sokoban_editor = (s) =>{
     }
 
     s.keyPressed = ()=>{
-        if (!(s.mouseX > 0 && s.mouseY > 0 && s.mouseX < s.width && s.mouseY < s.height)) return
+        if (!(s.mouseX > 0 && s.mouseY > 0 && s.mouseX < s.width && s.mouseY < s.height)) return true
         let direction = [0, 0]
         let player_pos = s.player_position
         switch (s.keyCode) {
@@ -186,12 +188,12 @@ export default class SokobanMapEditor{
 
     synthBoard(){
         console.log("synth!")
-        this.game.sokoban.board = Array.from({length: this.editor.board.length}, ()=>new Array(this.editor.board[0].length).fill(0))
-        for (let i = 0; i < this.editor.board.length; i++) {
-            for (let j = 0; j < this.editor.board[0].length; j++) {
-                this.game.sokoban.board[i][j] = this.editor.board[i][j]
-            }
-        }
+        // this.game.sokoban.board = Array.from({length: this.editor.board.length}, ()=>new Array(this.editor.board[0].length).fill(0))
+        // for (let i = 0; i < this.editor.board.length; i++) {
+        //     for (let j = 0; j < this.editor.board[0].length; j++) {
+        //         this.game.sokoban.board[i][j] = this.editor.board[i][j]
+        //     }
+        // }
         this.game.set_board(this.editor.board)
         this.game.show_board()
     }
