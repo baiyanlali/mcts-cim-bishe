@@ -80,13 +80,13 @@
                 import {vis_sokoban} from "./sokoban/tree_viz_sokoban.js";
                 import SokobanGame from "./sokoban/SokobanGame.js";
                 import SokobanMapEditor, {sketch_sokoban_editor} from "./sokoban/SokobanGameMapEditor.js"
-                window.mcts_sokoban_editor = new p5(sketch_sokoban_editor, "soko_mcts_tree_vis_editor")
-                window.mcts_sokobanGame = new SokobanGame("editor-")
-                window.soko_mcts_tree_vis_p5 = new p5(vis_sokoban, "soko_mcts_tree_vis");
-                window.soko_mcts_interactive = new SokobanInteractive(soko_mcts_tree_vis_p5, "soko_mcts", mcts_sokobanGame)
-                window.soko_mcts_interactive.setupInteractive()
-                mcts_sokobanGame.init()
-                window.sokoban_editor_manager = new SokobanMapEditor(mcts_sokobanGame, mcts_sokoban_editor)
+                window.mcts_sokoban_editor = new p5(sketch_sokoban_editor, "editor")
+                window.mcts_sokobanGame_editor = new SokobanGame("editor-")
+                window.soko_mcts_tree_vis_p5_editor = new p5(vis_sokoban, "soko_mcts_tree_vis_editor");
+                window.soko_mcts_interactive_editor = new SokobanInteractive(soko_mcts_tree_vis_p5_editor, "editor", mcts_sokobanGame_editor)
+                window.soko_mcts_interactive_editor.setupInteractive()
+                mcts_sokobanGame_editor.init()
+                window.sokoban_editor_manager = new SokobanMapEditor(mcts_sokobanGame_editor, mcts_sokoban_editor)
                 document.getElementById("soko_size").addEventListener('input', ()=>{
                     let size = document.getElementById("soko_size").value
                     document.getElementById("soko_size_text").innerText = size
@@ -102,9 +102,9 @@
             </script>
 
             <div>
-                <div id="soko_mcts_tree_vis_editor" style="display: flex; flex-direction: row;border: solid 1px black;border-radius: 10px;">
+                <div id="editor" style="display: flex; flex-direction: row;border: solid 1px black;border-radius: 10px;">
 <!--                    编辑器-->
-                    <div id="soko_mcts_tree_vis_editor_eee" style="display: flex; flex-direction: column; width: fit-content; border: solid 1px black;border-radius: 10px;">
+                    <div id="editor_eee" style="display: flex; flex-direction: column; width: fit-content; border: solid 1px black;border-radius: 10px;">
                         Map Editor
                         <div>
                             <input id="soko_size" type="range" min="5" max="20" value="5" step="1" />
@@ -174,28 +174,28 @@
 
                     <p id="editor-sokobangame_reset">
                         Clear! Step Used: <span id="editor-sokobangame_step"></span>
-                        <button onclick="mcts_sokobanGame.init()">Reset</button>
+                        <button onclick="mcts_sokobanGame_editor.init()">Reset</button>
                     </p>
 
 
                     <div id="editor-sokobangame_machine_controls_area">
                         <b>Machine controls:</b>
                         <div style="background-color: rgb(230, 230, 230); padding: 1em">
-                            <button onclick="mcts_sokobanGame.machineRandomMove()">Make random move</button>
+                            <button onclick="mcts_sokobanGame_editor.machineRandomMove()">Make random move</button>
                             <br>
-                            <button onclick="mcts_sokobanGame.machineMctsMoveWithMyMCTS(soko_mcts_interactive, MyMCTS)">Make
+                            <button onclick="mcts_sokobanGame_editor.machineMctsMoveWithMyMCTS(soko_mcts_interactive_editor, MyMCTS)">Make
                                 MCTS move
                             </button>
                             <br>
-                            <button onclick="mcts_sokobanGame.autoPlay(soko_mcts_interactive)">Auto Play
+                            <button onclick="mcts_sokobanGame_editor.autoPlay(soko_mcts_interactive_editor)">Auto Play
                             </button>
                             <br>
                             Run MCTS for:
                             <br>
-                            <input id="soko_mcts_tree_vis_mcts_timeout_slider" type="range" min="10"
+                            <input id="soko_mcts_tree_vis_editor_mcts_timeout_slider" type="range" min="10"
                                    max="2000" value="30" step="10"/>
                             <br>
-                            <span id="soko_mcts_tree_vis_mcts_timeout_span"><b>1</b></span> iterations
+                            <span id="soko_mcts_tree_vis_editor_mcts_timeout_span"><b>1</b></span> iterations
                         </div>
                     </div>
                 </div>
@@ -205,32 +205,32 @@
                         <div style="float: left; height: 100%; width: auto; padding: 0.25em">
                             <b>Current step</b>:
                             <br>
-                            <span id="soko_mcts_current_action_count">(0/0)</span>
+                            <span id="editor_current_action_count">(0/0)</span>
                             <br>
-                            <span id="soko_mcts_current_action_kind">---</span>
+                            <span id="editor_current_action_kind">---</span>
                             <br>
-                            <button id="soko_mcts_btn_next_action" disabled>next step &gt;</button>
+                            <button id="editor_btn_next_action" disabled>next step &gt;</button>
                         </div>
                         <div style="float: left; height: 100%; width: auto; padding: 0.25em;">
                             <b>Current iteration</b>:
                             <br>
-                            <span id="soko_mcts_current_iteration_count">(0/0)</span>
+                            <span id="editor_current_iteration_count">(0/0)</span>
                             <br>
                             <br>
-                            <button id="soko_mcts_btn_next_iteration" disabled>next iteration &gt;&gt;
+                            <button id="editor_btn_next_iteration" disabled>next iteration &gt;&gt;
                             </button>
                         </div>
                         <div style="float: left; height: 100%; width: auto; margin-top: 0.2em; margin-bottom: 0.2em;">
                             <button style="width: 200px; height: 45%; margin-bottom: 0.2em;"
-                                    id="soko_mcts_btn_last_step" disabled>visualize last step &gt;&gt;&gt;
+                                    id="editor_btn_last_step" disabled>visualize last step &gt;&gt;&gt;
                             </button>
                             <br>
-                            <button style="width: 200px; height: 45%;" id="soko_mcts_btn_make_play"
+                            <button style="width: 200px; height: 45%;" id="editor_btn_make_play"
                                     disabled>make play
                             </button>
                         </div>
                     </div>
-                    <div id="soko_mcts_tree_vis" class="tree_vis"></div>
+                    <div id="soko_mcts_tree_vis_editor" class="tree_vis"></div>
                 </div>
             </div>
 

@@ -16,7 +16,7 @@ export const sketch_sokoban_editor = (s) =>{
     s.hoveredTile = -1
 
     s.setup = () => {
-        let canvasContainer = document.getElementById("soko_mcts_tree_vis_editor_eee")
+        let canvasContainer = document.getElementById("editor_eee")
         s.canvas = s.createCanvas(400, 400)
         // s.canvas.style = "border: solid 1px black;border-radius: 10px;"
         s.canvas.parent(canvasContainer)
