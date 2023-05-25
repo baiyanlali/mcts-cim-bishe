@@ -1404,16 +1404,13 @@
             <h2>Design by your self MCTS</h2>
 
             <div class="framed">
-
-    <div class="inside">
+ <div class="inside">
         <div class="eyebrow">
             Sokoban: MCTS can be used to solve Sokoban. Sokoban is a puzzle game.
         </div>
 
         <div>
             <script type="module" src="./sokoban/tree_viz_sokoban.js"></script>
-            <script src="./sokoban/sokoban_interactive.js"></script>
-            <script src="./sokoban/sokoban_mcts.js"></script>
             <script type="module" src="./sokoban/SokobanGameMapEditor.js"></script>
             <script type="module">
                 import {vis_sokoban} from "./sokoban/tree_viz_sokoban.js";
@@ -1441,7 +1438,7 @@
             </script>
 
             <div>
-                <div id="editor" style="display: flex; flex-direction: row;border: solid 1px black;border-radius: 10px;">
+                <div id="editor" style="display: flex; flex-direction: row;width: 100%; border: solid 1px black;border-radius: 10px;">
 <!--                    编辑器-->
                     <div id="editor_eee" style="display: flex; flex-direction: column; width: fit-content; border: solid 1px black;border-radius: 10px;">
                         Map Editor
@@ -1578,6 +1575,7 @@
         <div class="caption"><b>Figure 10:</b><br> Machine/MCTS solves puzzle game.
         </div>
     </div>
+
 </div>
 
 

@@ -17,7 +17,8 @@ export const sketch_sokoban_editor = (s) =>{
 
     s.setup = () => {
         let canvasContainer = document.getElementById("editor_eee")
-        s.canvas = s.createCanvas(400, 400)
+
+        s.canvas = s.createCanvas(130, 130)
         // s.canvas.style = "border: solid 1px black;border-radius: 10px;"
         s.canvas.parent(canvasContainer)
         s.canvas.id("editororor")
