@@ -253,6 +253,17 @@ export default class SokobanGame {
         interactive.setMCTS(monteCarlo, MCTS_search)
     }
 
+    machineMctsMoveWithMyMCTS=(interactive, MyMCTS)=>{
+    let monteCarlo = new MyMCTS(this.sokoban)
+    // let MCTS_search = monteCarlo.runSearch(sketch.mctsTimeoutSlider.value())
+    let MCTS_search = monteCarlo.runSearch(interactive.tree_vis_p5.mctsTimeoutSlider.value())
+
+    if(this.machineControlsArea)
+    this.machineControlsArea.style.display="none"
+
+    interactive.setMCTS(monteCarlo, MCTS_search)
+    }
+
     autoPlay = async (interactive)=>{
         while (!this.sokoban.checkWin()){
             this.makeMctsMove(interactive)

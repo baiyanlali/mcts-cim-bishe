@@ -16,9 +16,15 @@ export const sketch_sokoban_editor = (s) =>{
     s.hoveredTile = -1
 
     s.setup = () => {
-        s.canvas = s.createCanvas(200, 200)
+        let canvasContainer = document.getElementById("soko_mcts_tree_vis_editor_eee")
+        s.canvas = s.createCanvas(400, 400)
+        // s.canvas.style = "border: solid 1px black;border-radius: 10px;"
+        s.canvas.parent(canvasContainer)
+        s.canvas.id("editororor")
         s.clear()
         s.hasSetup = true
+        s.noSmooth()
+
 
         if(s.onSetup !== null){
             s.onSetup(s.onSetupParams[0], s.onSetupParams[1])
@@ -194,6 +200,26 @@ export default class SokobanMapEditor{
         //         this.game.sokoban.board[i][j] = this.editor.board[i][j]
         //     }
         // }
+        console.log(this.editor.board)
+
+        let boxes = this.editor.board.flat().filter((p)=>p===SokobanTile.Box)
+        let ends = this.editor.board.flat().filter((p)=> p === SokobanTile.End)
+
+        console.log(boxes)
+        console.log(ends)
+
+        if(boxes === null || boxes.length === 0){
+            window.alert("No box found!")
+            return;
+        }
+        else if(ends === null || ends.length === 0){
+            window.alert("No ends found!")
+            return;
+        }
+        else if(boxes.length !== ends.length){
+            window.alert("Box and Ends not matches!")
+            return;
+        }
         this.game.set_board(this.editor.board)
         this.game.show_board()
     }

@@ -117,8 +117,6 @@ export default class Sokoban {
 
 
     is_legal_action(dir){
-        console.trace("looooooop")
-
         const target_position = add(this.player_position, dir)
         //判断是否越界
         if(this.check_bound(target_position)===false)return false

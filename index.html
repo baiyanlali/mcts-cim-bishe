@@ -1401,55 +1401,7 @@
         </section>
 
         <section id="design-yourself">
-            <h2>Design by your self</h2>
-            <div class="framed">
-
-                <div class="inside">
-                    <div class="eyebrow">
-                        Design your own MCTS.
-                    </div>
-
-                    <div>
-                        <div id="container" style="width:800px;height:600px;border:1px solid grey"></div>
-
-                        <script src="./node_modules/monaco-editor/min/vs/loader.js"></script>
-                        <script>
-
-                                function loadScript(url, callback) {
-                                  const xhr = new XMLHttpRequest();
-                                  xhr.open('GET', url);
-                                  xhr.onload = () => {
-                                    if (xhr.status === 200) {
-                                      if (callback) callback(xhr.responseText);
-                                    }
-                                  };
-                                  xhr.send();
-                                }
-
-                            require.config({ paths: { vs: './node_modules/monaco-editor/min/vs' } });
-                            require(['vs/editor/editor.main'], function () {
-                                window.editor = monaco.editor.create(document.getElementById('container'), {
-                                    value: ['function x() {', '\tconsole.log("Hello world!");', '}'].join('\n'),
-                                    language: 'javascript'
-                                })
-                            });
-
-                            loadScript("./mcts-viz/lib/mcts-template.js", (text)=>{
-                                window.editor.setValue(text)
-                            })
-
-                            window.play = () =>{
-                                eval(editor.getValue())
-                            }
-                        </script>
-
-	                    <button onclick="play()"> Play </button>
-                    </div>
-
-                    <div class="caption"><b>Figure 10:</b><br> Human VS Machine.
-                    </div>
-                </div>
-            </div>
+            <h2>Design by your self MCTS</h2>
 
         </section>
 

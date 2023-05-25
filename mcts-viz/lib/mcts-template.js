@@ -1,32 +1,35 @@
-class MyMCTS extends MCTS {
-    select(model) {
+window.MyMCTS = class extends SokobanMCTS {
+
+    constructor(model) {
+        super(model);
+    }
+
+    select() {
         let node = this.tree.get(0);
         let actions = [new AlgAction("selection", node.id, null, null)];
 
-        while (!node.isLeaf() && this.isFullyExplored(node, model)) {
+        while (!node.isLeaf() && this.isFullyExplored(node)) {
             node = this.getBestChildUCB1(node);
-            model.makeMove(node.data.move);
-
             actions.push(new AlgAction("selection", node.id, null, null));
         }
 
-        return {node: node, model: model, actions: actions};
+        return {node: node, model: node.data.sokoban, actions: actions};
     }
 
-    expand(node, model) {
+    expand(node) {
         let expandedNode = null;
         let actions = [];
+        let model = node.data.sokoban
+        let model2 = null
+        if (model.checkWin() === false) {
+            let legalPositions = this.getAvailablePlays(node);
+            // let randomPos = legalPositions[myp5.round(myp5.random(legalPositions.length - 1))];
+            let randomMove = legalPositions[Math.floor(Math.random()*legalPositions.length)];
 
-        if (model.checkWin() === "") {
-            let legalPositions = this.getAvailablePlays(node, model);
-            let randomPos = legalPositions[myp5.round(myp5.random(legalPositions.length - 1))];
+            model2 = model.copy()
+            model2.makeMove(randomMove);
 
-            let otherPlayer = getOtherPlayer(node.data.move.player);
-
-            let randomMove = new GameMove(otherPlayer, randomPos);
-            model.makeMove(randomMove);
-
-            expandedNode = new Node(new GameNode(randomMove));
+            expandedNode = new Node(new GameNodeSokoban(randomMove, model2));
             this.tree.insert(expandedNode, node);
 
             actions = [new AlgAction("expansion", expandedNode.id, null, null)];
@@ -36,30 +39,43 @@ class MyMCTS extends MCTS {
 
         return {
             node: expandedNode,
-            model: model,
-            actions: actions};
+            model: model2,
+            actions: actions
+        };
     }
 
-    simulate(node, model) {
-        let currentPlayer = node.data.move.player;
+    simulate(node) {
+        let model = node.data.sokoban.copy()
+        let step = 0
 
-        while (model.checkWin() === "") {
-            currentPlayer = getOtherPlayer(currentPlayer);
-            model.makeRandomMove(currentPlayer);
+        while (model.checkWin() === false) {
+            model.makeRandomMove()
+            step ++
+
+            if(step >= 100){
+                break
+            }
         }
 
-        let winner_icon = model.checkWin();
+
+        let winner_icon = model.checkWin()
+
 
         return {
             winner_icon: winner_icon,
+            win_step: model.checkFilledHoles(),
+            box_distance: model.checkBoxDistance(),
+            step_used: step,
             actions: [new AlgAction("simulation", node.id, null, {
                 "result": winner_icon,
-                "board": model.copy()
+                "board": model
             })]
         };
     }
 
-    backpropagate(node, winner) {
+    backpropagate(node, simulation) {
+        let step = simulation.step_used
+        let winner = simulation.winner_icon
         let actions = [];
         let action = new AlgAction("backpropagation", node.id, {
             old_value: node.data.value,
@@ -68,16 +84,17 @@ class MyMCTS extends MCTS {
 
         node.data.simulations += 1;
         if (!node.isRoot()) {
-            if ((node.data.move.player === PLAYER.MACHINE && winner === "m") ||
-                (node.data.move.player === PLAYER.HUMAN   && winner === "h")) {
-                node.data.value += 1;
-            }
-            if ((node.data.move.player === PLAYER.MACHINE && winner === "h") ||
-                (node.data.move.player === PLAYER.HUMAN   && winner === "m")) {
-                node.data.value -= 1;
+
+            if(winner===true){
+                node.data.value -= step * 0.5
+            }else{
+                node.data.value -= 0.1
             }
 
-            actions = actions.concat(this.backpropagate(this.tree.getParent(node), winner).actions);
+            node.data.value += simulation.win_step * 10
+            node.data.value -= simulation.box_distance
+
+            actions = actions.concat(this.backpropagate(this.tree.getParent(node), simulation).actions);
         }
 
         action.new_data = {

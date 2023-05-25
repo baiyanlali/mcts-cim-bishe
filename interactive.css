@@ -55,3 +55,9 @@
     margin-bottom: 20px;
     padding: 1em;
 }
+
+#editororor {
+    display: inline-block;
+    border: solid 1px black;
+    border-radius: 10px;
+}
